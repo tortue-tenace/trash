@@ -39,16 +39,18 @@ int	ft_cmp(int a, int b){
 }
 
 int	main(void){
-	t_list *try;
-	try = ft_new_node(4);
-	try->next = ft_new_node(7);
-	try->next->next = ft_new_node(5);
-	try->next->next->next = ft_new_node(1);
+	int		data[] = {4, 7, 5, 1};
+	t_list	*head = NULL;
+	t_list	**cur = &head;
 
-	sort_list(try, ft_cmp);
-	while (try != NULL){
-		printf("%d\n", try->data);
-		try = try->next;
+	for (int i = 0; i < 4; i++){
+		*cur = ft_new_node(data[i]);
+		cur = &(*cur)->next;
+	}
+	sort_list(head, ft_cmp);
+	while (head != NULL){
+		printf("%d\n", head->data);
+		head = head->next;
 	}
 	return (0);
 }
