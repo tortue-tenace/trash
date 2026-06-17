@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct      s_list
@@ -6,7 +7,30 @@ typedef struct      s_list
     void            *data;
 }                   t_list;
 
-void    ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)())
+int ft_lst_add_new(t_list **lst, int data){
+	t_list *head = *lst;
+	t_list *new_node = malloc(sizeof(t_list));
+	if (!new_node)
+		return(1);
+	int *data_ptr = malloc(sizeof(int));
+	if (!data_ptr)
+		return(1);
+	*data_ptr = data;
+	new_node->data = data_ptr;
+	new_node->next = NULL;
+	if (!*lst){
+		*lst = new_node;
+		return (0);
+	}
+	while (*lst && (*lst)->next){
+		*lst = (*lst)->next;
+	}
+	(*lst)->next = new_node;
+	*lst = head;
+	return (0);
+}
+
+void    ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(void *, void *))
 {
     t_list  *current;
     t_list  *to_free;
@@ -31,4 +55,33 @@ void    ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)())
         else
             current = current->next;
     }
+}
+int cmp(void *lst, void *data_ref){
+	if (*(int *)lst == *(int *)data_ref)
+		return (0);
+	return (1);
+}
+int main(){
+	t_list *lst = NULL;
+	int lol;
+
+	lol = 12;
+	ft_lst_add_new(&lst, 8);
+	ft_lst_add_new(&lst, 86);
+	ft_lst_add_new(&lst, 45);
+	ft_lst_add_new(&lst, 4442);
+	ft_lst_add_new(&lst, 12);
+	ft_lst_add_new(&lst, 5888);
+	t_list *head = lst;
+	while (lst){
+		printf("%d ", *(int *)lst->data);
+		lst = lst->next;
+	}
+	lst = head;
+	printf("-------------\n");
+	ft_list_remove_if(&lst, &lol, cmp);
+	while (lst){
+		printf("%d ", *(int *)lst->data);
+		lst = lst->next;
+	}	
 }
